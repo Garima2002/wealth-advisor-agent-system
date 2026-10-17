@@ -1,0 +1,153 @@
+{
+  "client_id": "client_002",
+  "currency": "USD",
+  "notes": "Synthetic benchmark test dataset: Contains large transaction, category outlier, spending spike, duplicate candidate, and portfolio concentration.",
+  "transactions": [
+    {
+      "id": "tx_a01",
+      "date": "2026-08-01",
+      "amount": 25000.0,
+      "type": "income",
+      "category": "salary",
+      "merchant": "Apex Ventures",
+      "description": "Executive compensation"
+    },
+    {
+      "id": "tx_a02",
+      "date": "2026-08-03",
+      "amount": 3200.0,
+      "type": "expense",
+      "category": "housing",
+      "merchant": "Grandview Luxury Apartments",
+      "description": "Apartment lease"
+    },
+    {
+      "id": "tx_a03",
+      "date": "2026-08-10",
+      "amount": 65.0,
+      "type": "expense",
+      "category": "dining",
+      "merchant": "Bistro Central",
+      "description": "Lunch"
+    },
+    {
+      "id": "tx_a04",
+      "date": "2026-08-18",
+      "amount": 55.0,
+      "type": "expense",
+      "category": "dining",
+      "merchant": "Cafe Verona",
+      "description": "Brunch"
+    },
+    {
+      "id": "tx_a05",
+      "date": "2026-08-25",
+      "amount": 75.0,
+      "type": "expense",
+      "category": "dining",
+      "merchant": "Tapas & Wine",
+      "description": "Dinner"
+    },
+    {
+      "id": "tx_a06",
+      "date": "2026-09-01",
+      "amount": 25000.0,
+      "type": "income",
+      "category": "salary",
+      "merchant": "Apex Ventures",
+      "description": "Executive compensation"
+    },
+    {
+      "id": "tx_a07",
+      "date": "2026-09-03",
+      "amount": 3200.0,
+      "type": "expense",
+      "category": "housing",
+      "merchant": "Grandview Luxury Apartments",
+      "description": "Apartment lease"
+    },
+    {
+      "id": "tx_a08",
+      "date": "2026-09-12",
+      "amount": 70.0,
+      "type": "expense",
+      "category": "dining",
+      "merchant": "Ocean Seafood",
+      "description": "Dinner"
+    },
+    {
+      "id": "tx_a09",
+      "date": "2026-10-01",
+      "amount": 25000.0,
+      "type": "income",
+      "category": "salary",
+      "merchant": "Apex Ventures",
+      "description": "Executive compensation"
+    },
+    {
+      "id": "tx_a10",
+      "date": "2026-10-04",
+      "amount": 8500.0,
+      "type": "expense",
+      "category": "luxury",
+      "merchant": "Cartier Fine Jewelers",
+      "description": "Anniversary watch purchase - flagged for high absolute threshold"
+    },
+    {
+      "id": "tx_a11",
+      "date": "2026-10-10",
+      "amount": 1250.0,
+      "type": "expense",
+      "category": "dining",
+      "merchant": "Le Bernardin Private Room",
+      "description": "Corporate dinner party - category outlier"
+    },
+    {
+      "id": "tx_a12",
+      "date": "2026-10-14",
+      "amount": 249.99,
+      "type": "expense",
+      "category": "software",
+      "merchant": "CloudHosting Inc",
+      "description": "Annual server renewal - duplicate charge candidate 1"
+    },
+    {
+      "id": "tx_a13",
+      "date": "2026-10-15",
+      "amount": 249.99,
+      "type": "expense",
+      "category": "software",
+      "merchant": "CloudHosting Inc",
+      "description": "Annual server renewal - duplicate charge candidate 2"
+    },
+    {
+      "id": "tx_a14",
+      "date": "2026-10-16",
+      "amount": 4500.0,
+      "type": "expense",
+      "category": "travel",
+      "merchant": "Four Seasons Resort",
+      "description": "Family vacation booking"
+    }
+  ],
+  "portfolio": [
+    {
+      "asset_name": "Direct Tech Equities & RSUs",
+      "asset_class": "EQUITIES",
+      "current_value": 850000.0,
+      "allocation_pct": 85.0
+    },
+    {
+      "asset_name": "High Yield Municipal Bonds",
+      "asset_class": "FIXED_INCOME",
+      "current_value": 100000.0,
+      "allocation_pct": 10.0
+    },
+    {
+      "asset_name": "Cash Sweep",
+      "asset_class": "CASH",
+      "current_value": 50000.0,
+      "allocation_pct": 5.0
+    }
+  ]
+}

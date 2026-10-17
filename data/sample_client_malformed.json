@@ -1,0 +1,74 @@
+{
+  "client_id": "client_003",
+  "currency": "USD",
+  "notes": "Synthetic benchmark test dataset: Contains malformed dates, negative amounts, missing fields, and non-dict records to test parser resilience.",
+  "transactions": [
+    {
+      "id": "tx_m01",
+      "date": "2026-09-01",
+      "amount": 6500.0,
+      "type": "income",
+      "category": "pension",
+      "merchant": "State Retirement System",
+      "description": "Retirement benefit"
+    },
+    {
+      "id": "tx_m02",
+      "date": "2026-09-05",
+      "amount": -150.0,
+      "type": "expense",
+      "category": "groceries",
+      "merchant": "Green Market",
+      "description": "Negative amount in input feed - should normalize to positive magnitude"
+    },
+    {
+      "id": "tx_m03",
+      "date": "2029-12-31",
+      "amount": 200.0,
+      "type": "expense",
+      "category": "medical",
+      "merchant": "Metro Pharmacy",
+      "description": "Future date in input feed - should trigger data quality warning"
+    },
+    {
+      "id": "tx_m04",
+      "date": "invalid-unparseable-date",
+      "amount": 80.0,
+      "type": "expense",
+      "category": "utilities",
+      "merchant": "Electric Co",
+      "description": "Unparseable date string - should be skipped gracefully with warning"
+    },
+    {
+      "id": "tx_m05",
+      "date": "2026-09-15",
+      "amount": "not_a_number",
+      "type": "expense",
+      "category": "books",
+      "merchant": "Bookstore",
+      "description": "Non-numeric amount - should be omitted gracefully"
+    },
+    "not_a_valid_json_object",
+    {
+      "id": "tx_m06",
+      "date": "2026-09-20",
+      "amount": 350.0,
+      "type": "expense",
+      "category": "utilities",
+      "merchant": "City Gas Utility",
+      "description": "Heating bill"
+    }
+  ],
+  "portfolio": [
+    {
+      "asset_name": "Treasury Notes",
+      "asset_class": "FIXED_INCOME",
+      "current_value": 75000.0
+    },
+    {
+      "asset_name": "Erroneous Negative Holding",
+      "asset_class": "OTHER",
+      "current_value": -500.0
+    }
+  ]
+}

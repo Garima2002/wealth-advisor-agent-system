@@ -1,0 +1,231 @@
+{
+  "metadata": {
+    "session_id": "sess_03373cc20ee9",
+    "correlation_id": "req_dd3207c4",
+    "timestamp": "2026-10-17T17:20:39.576417+00:00",
+    "duration_ms": 88.0
+  },
+  "client_id": "client_002",
+  "financial_summary": {
+    "total_income": 75000.0,
+    "total_expenses": 21414.98,
+    "net_cash_flow": 53585.02,
+    "savings_rate_pct": 71.45,
+    "category_breakdown": {
+      "luxury": 8500.0,
+      "housing": 6400.0,
+      "travel": 4500.0,
+      "dining": 1515.0,
+      "software": 499.98
+    },
+    "period_start": "2026-08-01",
+    "period_end": "2026-10-16",
+    "transaction_count": 14
+  },
+  "anomaly_findings": [
+    {
+      "finding_id": "3714e83e5ea490bf",
+      "anomaly_type": "LARGE_TRANSACTION_ABSOLUTE",
+      "severity": "MEDIUM",
+      "relevant_transaction_ids": [
+        "tx_a10"
+      ],
+      "observed_value": "$8,500.00",
+      "comparison_baseline": "$5,000.00 (configured threshold)",
+      "explanation": "Transaction tx_a10 of $8,500.00 at 'Cartier Fine Jewelers' exceeds the absolute threshold of $5,000.00.",
+      "limitations": "Rule evaluates single transaction magnitude only; legitimate capital purchases or tax payments may trigger this rule.",
+      "recommended_verification": "Verify invoice or vendor contract with the client to confirm authorization and tax classification.",
+      "review_status": "APPROVED",
+      "reviewer_id": "ADV_SARAH_CONNER",
+      "reviewer_notes": "Client confirmed luxury jeweler purchase as an anniversary gift. Invoice verified.",
+      "reviewed_at": "2026-10-17T17:19:14.638542+00:00"
+    },
+    {
+      "finding_id": "91a2125b7fda1c30",
+      "anomaly_type": "CATEGORY_SPENDING_OUTLIER",
+      "severity": "MEDIUM",
+      "relevant_transaction_ids": [
+        "tx_a11"
+      ],
+      "observed_value": "$1,250.00",
+      "comparison_baseline": "Category 'dining' mean: $303.00 (Sample size: 5)",
+      "explanation": "Transaction tx_a11 ($1,250.00) is 4.1x the historical category mean of $303.00 for 'dining'.",
+      "limitations": "Requires minimum 3 observations; periodic bulk purchasing or annual subscriptions can naturally elevate category variance.",
+      "recommended_verification": "Check whether the transaction represents an annual subscription, bulk order, or one-off equipment expenditure.",
+      "review_status": "PENDING",
+      "reviewer_id": null,
+      "reviewer_notes": null,
+      "reviewed_at": null
+    },
+    {
+      "finding_id": "907d6151295f4cc8",
+      "anomaly_type": "MONTHLY_SPENDING_SPIKE",
+      "severity": "HIGH",
+      "relevant_transaction_ids": [
+        "tx_a10",
+        "tx_a11",
+        "tx_a12",
+        "tx_a13",
+        "tx_a14"
+      ],
+      "observed_value": "$14,749.98 in 2026-10",
+      "comparison_baseline": "Historical monthly baseline: $3,332.50 (2 prior months)",
+      "explanation": "Spending in 2026-10 ($14,749.98) surged by 343% compared to the prior baseline average of $3,332.50.",
+      "limitations": "Evaluates aggregate monthly outflow; seasonal holiday spending or planned renovations may account for the spike.",
+      "recommended_verification": "Review major outflow transactions for the month with the client to determine if the spike is recurring or transient.",
+      "review_status": "PENDING",
+      "reviewer_id": null,
+      "reviewer_notes": null,
+      "reviewed_at": null
+    },
+    {
+      "finding_id": "234fc4c764bcb19c",
+      "anomaly_type": "DUPLICATE_TRANSACTION",
+      "severity": "MEDIUM",
+      "relevant_transaction_ids": [
+        "tx_a12",
+        "tx_a13"
+      ],
+      "observed_value": "Two charges of $249.99 to 'CloudHosting Inc' within 24.0h",
+      "comparison_baseline": "Expected single charge for identical vendor within 48-hour window",
+      "explanation": "Transactions tx_a12 and tx_a13 share identical amount ($249.99) and merchant ('CloudHosting Inc') within 24.0 hours.",
+      "limitations": "Legitimate repeated purchases (e.g., daily transit passes or double coffee orders) may match this pattern.",
+      "recommended_verification": "Check with client and merchant billing statement to confirm whether this represents an accidental duplicate billing.",
+      "review_status": "PENDING",
+      "reviewer_id": null,
+      "reviewer_notes": null,
+      "reviewed_at": null
+    },
+    {
+      "finding_id": "a744f066cd04d551",
+      "anomaly_type": "PORTFOLIO_CONCENTRATION_RISK",
+      "severity": "HIGH",
+      "relevant_transaction_ids": [],
+      "observed_value": "85.0% in EQUITIES ($850,000.00 of $1,000,000.00)",
+      "comparison_baseline": "Maximum recommended concentration: 60%",
+      "explanation": "Asset class 'EQUITIES' constitutes 85.0% of total portfolio value, exceeding the concentration guideline of 60%.",
+      "limitations": "Concentrated positions may be deliberate (e.g. founder equity or specialized mandate).",
+      "recommended_verification": "Discuss diversification strategy, hedging possibilities, and liquidity requirements with the client.",
+      "review_status": "PENDING",
+      "reviewer_id": null,
+      "reviewer_notes": null,
+      "reviewed_at": null
+    }
+  ],
+  "risk_indicators": [
+    {
+      "indicator_name": "ELEVATED_ANOMALY_CONCENTRATION",
+      "severity": "HIGH",
+      "observed": "2 high/critical anomalies detected",
+      "evidence": "Identified multiple material anomalies requiring advisor review: MONTHLY_SPENDING_SPIKE, PORTFOLIO_CONCENTRATION_RISK."
+    },
+    {
+      "indicator_name": "PORTFOLIO_CONCENTRATION",
+      "severity": "HIGH",
+      "observed": "85.0% in EQUITIES ($850,000.00 of $1,000,000.00)",
+      "evidence": "Asset class 'EQUITIES' constitutes 85.0% of total portfolio value, exceeding the concentration guideline of 60%."
+    }
+  ],
+  "actionable_insights": [
+    {
+      "insight_id": "ins_cf_c20ee9",
+      "category": "CASH_FLOW",
+      "title": "Cash Flow Trajectory: Surplus ($53,585.02)",
+      "observed_facts": [
+        "Total income recorded: $75,000.00.",
+        "Total living and operational expenses: $21,414.98.",
+        "Net period cash flow: $53,585.02 over 14 transactions.",
+        "Top spending category is 'luxury' at $8,500.00."
+      ],
+      "possible_explanations": [
+        "Client maintains positive operating cash flow during the evaluated interval.",
+        "Discretionary expenditures remain within baseline operational margins."
+      ],
+      "suggested_next_steps": [
+        "Assess whether surplus cash can be routed toward tax-advantaged savings or emergency liquidity.",
+        "Review recurring monthly subscriptions to optimize continuous discretionary outlay."
+      ],
+      "confidence_score": 1.0,
+      "disclaimer": "Advisory insight generated for analytical review only. Does not constitute binding investment advice, credit evaluation, or autonomous order routing."
+    },
+    {
+      "insight_id": "ins_anom_c20ee9",
+      "category": "ANOMALY_ALERT",
+      "title": "Financial Outliers & Review Queue (5 findings)",
+      "observed_facts": [
+        "5 total anomaly findings flagged across transactional and balance records.",
+        "2 findings categorized as HIGH or CRITICAL severity.",
+        "[LARGE_TRANSACTION_ABSOLUTE] $8,500.00 - Transaction tx_a10 of $8,500.00 at 'Cartier Fine Jewelers' exceeds the absolute threshold of $5,000.00.",
+        "[CATEGORY_SPENDING_OUTLIER] $1,250.00 - Transaction tx_a11 ($1,250.00) is 4.1x the historical category mean of $303.00 for 'dining'.",
+        "[MONTHLY_SPENDING_SPIKE] $14,749.98 in 2026-10 - Spending in 2026-10 ($14,749.98) surged by 343% compared to the prior baseline average of $3,332.50."
+      ],
+      "possible_explanations": [
+        "Flagged anomalies reflect mathematical and rule deviations; they do not establish fraud or unauthorized activity.",
+        "Spikes may be attributable to legitimate high-value purchases, vendor billing adjustments, or accounting timing."
+      ],
+      "suggested_next_steps": [
+        "Submit pending findings to the HumanReviewService for formal advisor adjudication.",
+        "Contact client or accounting controller to confirm verification artifacts for highlighted charges.",
+        "Never initiate account blocks or transaction freezes without corroborating evidence."
+      ],
+      "confidence_score": 0.95,
+      "disclaimer": "Advisory insight generated for analytical review only. Does not constitute binding investment advice, credit evaluation, or autonomous order routing."
+    },
+    {
+      "insight_id": "ins_port_c20ee9",
+      "category": "PORTFOLIO_RISK",
+      "title": "Portfolio Asset Allocation & Risk Alignment",
+      "observed_facts": [
+        "Portfolio contains 3 tracked asset holdings totaling $1,000,000.00.",
+        "Observed: 85.0% in EQUITIES ($850,000.00 of $1,000,000.00) vs Maximum recommended concentration: 60%"
+      ],
+      "possible_explanations": [
+        "Asset appreciation over time can cause allocation drift beyond initial target risk profiles.",
+        "Holdings may reflect concentrated employer equity compensation or targeted legacy investments."
+      ],
+      "suggested_next_steps": [
+        "Schedule an asset-allocation review to discuss potential diversification or rebalancing options.",
+        "Review current investor profile in CRM to verify whether risk tolerance remains accurate."
+      ],
+      "confidence_score": 1.0,
+      "disclaimer": "Advisory insight generated for analytical review only. Does not constitute binding investment advice, credit evaluation, or autonomous order routing."
+    }
+  ],
+  "data_quality_warnings": [],
+  "human_review_status": {
+    "PENDING": 4,
+    "APPROVED": 1,
+    "REJECTED": 0,
+    "OVERRIDDEN": 0
+  },
+  "system_status": {
+    "partial_result": false,
+    "crm_status": "CONNECTED",
+    "execution_traces": [
+      {
+        "agent": "DataFetcherAgent",
+        "stage": "ingest_and_normalize",
+        "duration_ms": 64.44,
+        "status": "SUCCESS",
+        "notes": null,
+        "timestamp": "2026-10-17T17:20:39.552927+00:00"
+      },
+      {
+        "agent": "AnalyzerAgent",
+        "stage": "financial_analysis",
+        "duration_ms": 1.94,
+        "status": "SUCCESS",
+        "notes": null,
+        "timestamp": "2026-10-17T17:20:39.554949+00:00"
+      },
+      {
+        "agent": "InsightAgent",
+        "stage": "insight_generation",
+        "duration_ms": 0.11,
+        "status": "SUCCESS",
+        "notes": null,
+        "timestamp": "2026-10-17T17:20:39.555103+00:00"
+      }
+    ]
+  }
+}
