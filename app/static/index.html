@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wealth Advisor Multi-Agent System Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .live-pulse { animation: pulse-subtle 2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
+
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <i class="fa-solid fa-brain-circuit text-xl text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            Wealth Advisor
+          </h1>
+          <p class="text-xs text-slate-400 font-medium tracking-wider uppercase">Autonomous Multi-Agent System</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 live-pulse"></span>
+          <span>Engine Online</span>
+        </div>
+        <a href="/docs" target="_blank" class="text-xs font-medium text-slate-300 hover:text-cyan-400 transition flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-800/50">
+          <i class="fa-solid fa-code"></i>
+          <span>Swagger API</span>
+        </a>
+        <a href="https://github.com/Garima2002/wealth-advisor-agent-system" target="_blank" class="text-xs font-medium text-slate-300 hover:text-white transition flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-800/50">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Control Header & Scenario Selection -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-100 flex items-center space-x-2">
+            <i class="fa-solid fa-sliders text-cyan-400"></i>
+            <span>Analysis Control Center</span>
+          </h2>
+          <p class="text-sm text-slate-400">Select a pre-configured synthetic client scenario or simulate service degradation.</p>
+        </div>
+        
+        <!-- Run Action Button -->
+        <button id="runBtn" onclick="runAnalysis()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 hover:from-cyan-400 to-blue-600 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2 transition transform active:scale-95">
+          <i class="fa-solid fa-play"></i>
+          <span>Run Multi-Agent Analysis</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-slate-800/60">
+        <!-- Preset Selector -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Client Scenario</label>
+          <select id="clientSelect" onchange="loadPresetData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500">
+            <option value="client_002" selected>client_002: David Chen (5 Anomalies, Outliers & Spikes)</option>
+            <option value="client_001">client_001: Sarah Jenkins (Normal Baseline, 0 Anomalies)</option>
+            <option value="client_003">client_003: Elena Rostova (Malformed Input Feed & Sanitization)</option>
+          </select>
+        </div>
+
+        <!-- Failure Simulator Toggle -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Simulate CRM Degradation</label>
+          <div class="flex items-center space-x-3 h-10">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="mockFail" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-500"></div>
+              <span class="ml-3 text-xs font-medium text-slate-300">Simulate CRM 503 Failure (Partial Fallback)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Timeout Simulator Toggle -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Timeout Boundary Test</label>
+          <div class="flex items-center space-x-3 h-10">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="mockTimeout" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+              <span class="ml-3 text-xs font-medium text-slate-300">Simulate CRM Socket Timeout</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Metric Cards -->
+    <div id="kpiSection" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Net Cash Flow</span>
+          <i class="fa-solid fa-wallet text-cyan-400"></i>
+        </div>
+        <div id="kpiNetFlow" class="text-2xl font-bold text-emerald-400">$0.00</div>
+        <p id="kpiTxCount" class="text-xs text-slate-500 mt-1">0 transactions</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Savings Rate</span>
+          <i class="fa-solid fa-chart-pie text-blue-400"></i>
+        </div>
+        <div id="kpiSavingsRate" class="text-2xl font-bold text-slate-100">0.0%</div>
+        <p class="text-xs text-slate-500 mt-1">Benchmark: &ge; 15%</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Total Income</span>
+          <i class="fa-solid fa-arrow-trend-up text-emerald-400"></i>
+        </div>
+        <div id="kpiTotalIncome" class="text-2xl font-bold text-slate-100">$0.00</div>
+        <p class="text-xs text-slate-500 mt-1">Gross credits</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Total Outflow</span>
+          <i class="fa-solid fa-arrow-trend-down text-rose-400"></i>
+        </div>
+        <div id="kpiTotalExpenses" class="text-2xl font-bold text-slate-100">$0.00</div>
+        <p class="text-xs text-slate-500 mt-1">Living & operational</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-slate-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Pipeline Latency</span>
+          <i class="fa-solid fa-bolt text-amber-400"></i>
+        </div>
+        <div id="kpiLatency" class="text-2xl font-bold text-amber-400">0 ms</div>
+        <p id="kpiPartialStatus" class="text-xs text-slate-400 mt-1">Normal execution</p>
+      </div>
+    </div>
+
+    <!-- Warnings / Partial Degradation Banner -->
+    <div id="warningsBanner" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 text-amber-300 text-sm space-y-1">
+      <div class="font-semibold flex items-center space-x-2">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Data Quality & Degradation Warnings</span>
+      </div>
+      <ul id="warningsList" class="list-disc list-inside text-xs text-amber-200/80 space-y-0.5"></ul>
+    </div>
+
+    <!-- Main Content Layout (Left: Findings & Reviews, Right: Insights & Trace) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Left Column: Anomaly Findings & Human Review Center (7 cols) -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-slate-100 flex items-center space-x-2">
+            <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+            <span>Detected Financial Anomalies</span>
+          </h3>
+          <span id="findingsCountBadge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">0 Flagged</span>
+        </div>
+
+        <div id="findingsContainer" class="space-y-4">
+          <!-- Dynamic Finding Cards will render here -->
+          <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 text-center text-slate-500">
+            <i class="fa-solid fa-magnifying-glass text-3xl mb-3 text-slate-600"></i>
+            <p>Click "Run Multi-Agent Analysis" to process transactions and inspect detected anomalies.</p>
+          </div>
+        </div>
+
+        <!-- Risk Signals -->
+        <div id="riskIndicatorsSection" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+            <i class="fa-solid fa-radiation text-rose-400"></i>
+            <span>Systemic Risk Indicators</span>
+          </h4>
+          <div id="riskList" class="space-y-2.5"></div>
+        </div>
+      </div>
+
+      <!-- Right Column: Advisory Insights & Multi-Agent Trace (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Actionable Insights -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-bold text-slate-100 flex items-center space-x-2">
+            <i class="fa-solid fa-compass text-blue-400"></i>
+            <span>Advisory Insights (Explainable)</span>
+          </h3>
+
+          <div id="insightsContainer" class="space-y-4">
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-sm">
+              Insights will populate following execution.
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Agent Execution Stage Trace -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+            <i class="fa-solid fa-timeline text-cyan-400"></i>
+            <span>Multi-Agent Execution Trace</span>
+          </h4>
+          <div id="tracesContainer" class="space-y-2 text-xs">
+            <div class="text-slate-500 italic">No execution trace recorded yet.</div>
+          </div>
+        </div>
+
+        <!-- Historical Memory (Client Scoped) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+            <span class="flex items-center space-x-2">
+              <i class="fa-solid fa-database text-purple-400"></i>
+              <span>Client Historical Memory (SQLite)</span>
+            </span>
+            <span id="historyCountBadge" class="text-[10px] text-slate-500">0 stored runs</span>
+          </h4>
+          <div id="historyContainer" class="space-y-1.5 text-xs max-h-48 overflow-y-auto">
+            <div class="text-slate-500 italic">No prior runs loaded.</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Review Feedback Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-md bg-slate-900 border border-slate-700 text-slate-200 px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+    <div>
+      <div id="toastTitle" class="font-semibold text-xs text-white">Review Saved</div>
+      <div id="toastMsg" class="text-xs text-slate-400">Finding decision recorded to SQLite audit table.</div>
+    </div>
+  </div>
+
+  <script>
+    let currentPayload = null;
+    let currentResponse = null;
+
+    // Load initial scenario on page load
+    window.onload = function() {
+      loadPresetData();
+    };
+
+    function showToast(title, msg, isSuccess = true) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastTitle').innerText = title;
+      document.getElementById('toastMsg').innerText = msg;
+      const icon = document.getElementById('toastIcon');
+      icon.className = isSuccess ? 'fa-solid fa-circle-check text-emerald-400 text-lg' : 'fa-solid fa-circle-xmark text-rose-400 text-lg';
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
+    }
+
+    async function loadPresetData() {
+      const clientId = document.getElementById('clientSelect').value;
+      // Pre-run analysis automatically so user sees fresh data immediately
+      runAnalysis();
+    }
+
+    async function runAnalysis() {
+      const clientId = document.getElementById('clientSelect').value;
+      const mockFail = document.getElementById('mockFail').checked;
+      const mockTimeout = document.getElementById('mockTimeout').checked;
+      const runBtn = document.getElementById('runBtn');
+
+      runBtn.disabled = true;
+      runBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Analyzing...</span>';
+
+      try {
+        const res = await fetch('/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Correlation-ID': 'web_dash_' + Math.random().toString(36).substring(2, 9)
+          },
+          body: JSON.stringify({
+            client_id: clientId,
+            mock_crm_failure: mockFail,
+            mock_crm_timeout: mockTimeout
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.message || 'Analysis pipeline returned HTTP ' + res.status);
+        }
+
+        const data = await res.json();
+        currentResponse = data;
+        renderDashboard(data);
+        fetchClientHistory(clientId);
+        showToast('Analysis Completed', `Processed in ${data.metadata.duration_ms}ms with ${data.anomaly_findings.length} findings.`);
+      } catch (err) {
+        showToast('Analysis Failed', err.message, false);
+      } finally {
+        runBtn.disabled = false;
+        runBtn.innerHTML = '<i class="fa-solid fa-play"></i><span>Run Multi-Agent Analysis</span>';
+      }
+    }
+
+    function renderDashboard(data) {
+      // 1. KPI Cards
+      const s = data.financial_summary;
+      const netFlowElem = document.getElementById('kpiNetFlow');
+      netFlowElem.innerText = (s.net_cash_flow >= 0 ? '+' : '-') + '$' + Math.abs(s.net_cash_flow).toLocaleString(undefined, {minimumFractionDigits: 2});
+      netFlowElem.className = 'text-2xl font-bold ' + (s.net_cash_flow >= 0 ? 'text-emerald-400' : 'text-rose-400');
+      
+      document.getElementById('kpiTxCount').innerText = `${s.transaction_count} transactions (${s.period_start || ''} to ${s.period_end || ''})`;
+      document.getElementById('kpiSavingsRate').innerText = (s.savings_rate_pct !== null ? s.savings_rate_pct + '%' : 'N/A');
+      document.getElementById('kpiTotalIncome').innerText = '$' + s.total_income.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('kpiTotalExpenses').innerText = '$' + s.total_expenses.toLocaleString(undefined, {minimumFractionDigits: 2});
+      document.getElementById('kpiLatency').innerText = `${data.metadata.duration_ms} ms`;
+      
+      const partialElem = document.getElementById('kpiPartialStatus');
+      if (data.system_status.partial_result) {
+        partialElem.innerText = '⚠️ Partial Result Mode';
+        partialElem.className = 'text-xs text-rose-400 font-semibold';
+      } else {
+        partialElem.innerText = 'Full Analysis Mode';
+        partialElem.className = 'text-xs text-slate-400 font-medium';
+      }
+
+      // 2. Warnings Banner
+      const warnBanner = document.getElementById('warningsBanner');
+      const warnList = document.getElementById('warningsList');
+      if (data.data_quality_warnings && data.data_quality_warnings.length > 0) {
+        warnBanner.classList.remove('hidden');
+        warnList.innerHTML = data.data_quality_warnings.map(w => `<li>${w}</li>`).join('');
+      } else {
+        warnBanner.classList.add('hidden');
+        warnList.innerHTML = '';
+      }
+
+      // 3. Findings List
+      const findingsCountBadge = document.getElementById('findingsCountBadge');
+      findingsCountBadge.innerText = `${data.anomaly_findings.length} Flagged`;
+      
+      const findingsContainer = document.getElementById('findingsContainer');
+      if (data.anomaly_findings.length === 0) {
+        findingsContainer.innerHTML = `
+          <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-8 text-center text-emerald-300">
+            <i class="fa-solid fa-circle-check text-3xl mb-3 text-emerald-400"></i>
+            <h4 class="font-bold text-base">Clean Financial Baseline</h4>
+            <p class="text-xs text-emerald-400/80 mt-1">Zero spending or portfolio anomalies detected across evaluated interval.</p>
+          </div>
+        `;
+      } else {
+        findingsContainer.innerHTML = data.anomaly_findings.map((f, idx) => {
+          const sevColor = {
+            'CRITICAL': 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+            'HIGH': 'bg-orange-500/10 text-orange-400 border-orange-500/30',
+            'MEDIUM': 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+            'LOW': 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+          }[f.severity] || 'bg-slate-800 text-slate-300 border-slate-700';
+
+          const statusColor = {
+            'APPROVED': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+            'REJECTED': 'bg-slate-800 text-slate-400 border-slate-700',
+            'OVERRIDDEN': 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+            'PENDING': 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+          }[f.review_status] || 'bg-slate-800 text-slate-300 border-slate-700';
+
+          return `
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-4 hover:border-slate-700 transition">
+              <div class="flex items-start justify-between gap-2">
+                <div class="space-y-1">
+                  <div class="flex items-center space-x-2">
+                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded border ${sevColor}">${f.severity}</span>
+                    <span class="text-sm font-bold text-slate-200">${f.anomaly_type}</span>
+                  </div>
+                  <div class="text-[11px] font-mono text-slate-500">ID: ${f.finding_id}</div>
+                </div>
+                <span id="status_badge_${f.finding_id}" class="text-xs font-semibold px-2.5 py-1 rounded-full border ${statusColor}">
+                  ${f.review_status}
+                </span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-950 p-3.5 rounded-xl border border-slate-800/80">
+                <div>
+                  <span class="text-slate-500 font-medium">Observed Value:</span>
+                  <div class="font-bold text-slate-200">${f.observed_value}</div>
+                </div>
+                <div>
+                  <span class="text-slate-500 font-medium">Comparison Baseline:</span>
+                  <div class="font-bold text-slate-300">${f.comparison_baseline || 'None'}</div>
+                </div>
+              </div>
+
+              <p class="text-xs text-slate-300 leading-relaxed">${f.explanation}</p>
+              
+              <div class="text-[11px] text-slate-400 italic bg-slate-950/40 p-2.5 rounded-lg border-l-2 border-cyan-500/50">
+                <span class="font-semibold text-slate-300">Limitations:</span> ${f.limitations}
+              </div>
+
+              <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
+                <span class="text-[11px] text-slate-500 flex items-center space-x-1">
+                  <i class="fa-solid fa-list-check text-cyan-400"></i>
+                  <span>${f.recommended_verification}</span>
+                </span>
+                
+                <!-- Human-in-the-Loop Actions -->
+                <div class="flex items-center space-x-2">
+                  <button onclick="submitReview('${f.finding_id}', 'APPROVE')" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition flex items-center space-x-1">
+                    <i class="fa-solid fa-check"></i>
+                    <span>Approve</span>
+                  </button>
+                  <button onclick="submitReview('${f.finding_id}', 'REJECT')" class="text-xs px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition flex items-center space-x-1">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Reject</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 4. Risk Indicators
+      const riskSec = document.getElementById('riskIndicatorsSection');
+      const riskList = document.getElementById('riskList');
+      if (data.risk_indicators && data.risk_indicators.length > 0) {
+        riskSec.classList.remove('hidden');
+        riskList.innerHTML = data.risk_indicators.map(r => `
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-200">${r.indicator_name}</span>
+              <span class="text-[10px] font-mono font-bold text-rose-400">${r.severity}</span>
+            </div>
+            <div class="text-slate-400">${r.evidence}</div>
+          </div>
+        `).join('');
+      } else {
+        riskSec.classList.add('hidden');
+      }
+
+      // 5. Actionable Insights
+      const insightsContainer = document.getElementById('insightsContainer');
+      insightsContainer.innerHTML = data.actionable_insights.map(ins => `
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">${ins.category}</span>
+            <span class="text-[11px] text-slate-400">Confidence: ${(ins.confidence_score * 100).toFixed(0)}%</span>
+          </div>
+          <h4 class="text-sm font-bold text-slate-100">${ins.title}</h4>
+          
+          <div class="space-y-2 text-xs">
+            <div>
+              <span class="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">Observed Facts:</span>
+              <ul class="list-disc list-inside text-slate-300 mt-0.5 space-y-0.5">
+                ${ins.observed_facts.map(f => `<li>${f}</li>`).join('')}
+              </ul>
+            </div>
+            <div>
+              <span class="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">Possible Explanations:</span>
+              <ul class="list-disc list-inside text-slate-400 mt-0.5 space-y-0.5">
+                ${ins.possible_explanations.map(e => `<li>${e}</li>`).join('')}
+              </ul>
+            </div>
+            <div>
+              <span class="text-cyan-400 font-semibold uppercase text-[10px] tracking-wider">Suggested Next Steps:</span>
+              <ul class="list-disc list-inside text-cyan-200 mt-0.5 space-y-0.5">
+                ${ins.suggested_next_steps.map(s => `<li>${s}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // 6. Execution Trace
+      const tracesContainer = document.getElementById('tracesContainer');
+      const traces = data.system_status.execution_traces || [];
+      tracesContainer.innerHTML = traces.map(t => `
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800/80">
+          <div class="flex items-center space-x-2">
+            <span class="w-1.5 h-1.5 rounded-full ${t.status === 'SUCCESS' ? 'bg-emerald-400' : 'bg-rose-400'}"></span>
+            <span class="font-bold text-slate-300">${t.agent}</span>
+            <span class="text-slate-500">(${t.stage})</span>
+          </div>
+          <span class="font-mono text-cyan-400">${t.duration_ms} ms</span>
+        </div>
+      `).join('');
+    }
+
+    async function submitReview(findingId, decision) {
+      const clientId = document.getElementById('clientSelect').value;
+      try {
+        const res = await fetch(`/reviews/${findingId}?client_id=${clientId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            decision: decision,
+            reviewer_id: 'ADV_DASHBOARD_USER',
+            reviewer_notes: `Advisor reviewed and marked as ${decision} via Web UI.`
+          })
+        });
+
+        if (!res.ok) throw new Error('Failed to record review');
+        
+        const badge = document.getElementById(`status_badge_${findingId}`);
+        if (badge) {
+          badge.innerText = decision === 'APPROVE' ? 'APPROVED' : 'REJECTED';
+          badge.className = decision === 'APPROVE'
+            ? 'text-xs font-semibold px-2.5 py-1 rounded-full border bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+            : 'text-xs font-semibold px-2.5 py-1 rounded-full border bg-slate-800 text-slate-400 border-slate-700';
+        }
+        showToast('Review Recorded', `Finding ${findingId} marked as ${decision} in audit store.`);
+      } catch (err) {
+        showToast('Review Error', err.message, false);
+      }
+    }
+
+    async function fetchClientHistory(clientId) {
+      try {
+        const res = await fetch(`/clients/${clientId}/history`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('historyContainer');
+        document.getElementById('historyCountBadge').innerText = `${data.count} stored runs`;
+        if (data.records.length === 0) {
+          container.innerHTML = '<div class="text-slate-500 italic">No historical runs recorded yet.</div>';
+          return;
+        }
+        container.innerHTML = data.records.map(r => `
+          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800/80">
+            <div>
+              <span class="font-mono text-slate-300 font-bold">${r.session_id}</span>
+              <div class="text-[10px] text-slate-500">${new Date(r.timestamp).toLocaleTimeString()}</div>
+            </div>
+            <div class="text-right">
+              <span class="font-bold ${r.net_cash_flow >= 0 ? 'text-emerald-400' : 'text-rose-400'}">
+                ${r.net_cash_flow >= 0 ? '+' : ''}$${r.net_cash_flow.toLocaleString(undefined, {minimumFractionDigits: 0})}
+              </span>
+              <div class="text-[10px] text-amber-400">${r.anomaly_count} anomalies</div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Failed to fetch history:', err);
+      }
+    }
+  </script>
+</body>
+</html>

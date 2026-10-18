@@ -2,10 +2,11 @@
 
 import time
 import uuid
+from pathlib import Path
 from typing import Callable
 from fastapi import FastAPI, Request, Response, status
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from app.api.routes import router
 from app.config import settings
@@ -99,6 +100,15 @@ def create_app() -> FastAPI:
 
     # Include API Routers
     app.include_router(router)
+
+    # Serve Interactive Web Dashboard
+    @app.get("/", response_class=HTMLResponse, include_in_schema=False)
+    @app.get("/dashboard", response_class=HTMLResponse, include_in_schema=False)
+    async def serve_dashboard():
+        html_file = Path(__file__).parent.parent / "static" / "index.html"
+        if html_file.exists():
+            return HTMLResponse(content=html_file.read_text(encoding="utf-8"))
+        return HTMLResponse("<h1>Wealth Advisor Multi-Agent System</h1><p><a href='/docs'>Swagger API</a></p>")
 
     return app
 

@@ -11,6 +11,13 @@ def test_api_health_endpoint(api_client: TestClient):
     assert data["uptime_status"] == "operational"
 
 
+def test_api_dashboard_endpoint(api_client: TestClient):
+    response = api_client.get("/")
+    assert response.status_code == 200
+    assert "Wealth Advisor" in response.text
+    assert "Analysis Control Center" in response.text
+
+
 def test_api_analyze_normal_workflow(api_client: TestClient, sample_normal_data: dict):
     payload = {
         "client_id": "client_001",
